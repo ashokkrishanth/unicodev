@@ -12,7 +12,7 @@ const saltRounds = 10;
 const app = express();
 
 var port = process.env.PORT || 3000;
-app.get('/test', (req,res) => res.send('Hello testing123 Ashok Pandian'));
+app.get('/test', (req,res) => res.send('Hello testing Ashok Pandian'));
 app.listen(port, () => console.log('Server is running on port'+port));
 
 app.use(express.json());
