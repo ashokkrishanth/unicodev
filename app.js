@@ -92,14 +92,14 @@ app.post("/login", (req, res) => {
     console.log(req);
     db.query('select * from store_users', function (error, results, fields) {
      if (error) throw error;
-     res.end(JSON.stringify(results));
+     res.send(JSON.stringify(results));
    });
   });
   
   app.get('/storeusers/:username', function (req, res) {
     db.query('select * from store_users where account_email_address=?', [req.params.username], function (error, results, fields) {
      if (error) throw error;
-     res.end(JSON.stringify(results));
+     res.send(JSON.stringify(results));
    });
   });
   
