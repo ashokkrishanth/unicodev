@@ -70,7 +70,7 @@ app.post("/login", (req, res) => {
         }
   
         if (result.length > 0) {
-          bcrypt.compare(password, result[0].password, (error, response) => {
+          bcrypt.compare(password, result[0].user_password, (error, response) => {
             if (response) {
               req.session.user = result;
               //console.log(req.session.user);
