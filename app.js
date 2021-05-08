@@ -39,11 +39,11 @@ app.use(
 );
 
 const db = mysql.createConnection({
-    user: "mysqladmin@zcumysqlunico",
-    host: "zcumysqlunico.mysql.database.azure.com",
-    password: "P@ssword",
-    database: "devtesting",
-  });
+  user: "unicodevadmin@unicodevserver",
+  host: "unicodevserver.mysql.database.azure.com",
+  password: "P@ssword",
+  database: "devtesting",
+});
   
   app.get("/login", (req, res) => {
     console.log("inside the get login");
