@@ -18,7 +18,7 @@ app.listen(port, () => console.log('Server is running on port'+port));
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["https://devreactjs.azurewebsites.net"],
     methods: ["GET", "POST"],
     credentials: true,
   })
