@@ -55,36 +55,30 @@ const db = mysql.createConnection({
 
   
 app.post("/login", (req, res) => {
-    console.log("inside the post login");
-    const username = req.body.username;
-    const password = req.body.password;
-    console.log(username);
-    console.log(password);
-    db.query(
-      "SELECT * FROM users WHERE account_email_address = ?;",
-      username,
-      (err, result) => {
-        if (err) {
-          res.send({ err: err });
-        }
-  
-        if (result.length > 0) {
-          bcrypt.compare(password, result[0].user_password, (error, response) => {
-            if (response) {
-              req.session.user = result;
-              //console.log(req.session.user);
-              res.send(result);
-            } else {
-              console.log(".....wrong password.......");
-              res.send({ wrongpwd: "yes" });
-            }
-          });
-        } else {
-          console.log(".....no account.......");
-          res.send({ noaccount: "yes"});
-        }
-      }
-    );
+  console.log("inside the post login");
+  const username = req.body.username;
+  const password = req.body.password;
+  console.log(username);
+  console.log(password);
+
+  var return_data = {};
+  //db.query("SELECT * FROM store_users WHERE account_email_address = ?;",username,(err, result) => 
+  db.query("SELECT * FROM users WHERE account_email_address = ?;",username,(err, result) => 
+  {
+	  if (err) {res.send({ err: err });}
+      console.log(result);
+		  if (result.length > 0) {
+			  bcrypt.compare(password, result[0].user_password, (error, response) => {
+				  if (response) 
+				  {	
+					  req.session.user = result;console.log("success.."+result[0].store_name);
+					  return_data.store_users = result;
+            res.send(return_data);
+				  }else {console.log(".....wrong123 password.......");res.send({ wrongpwd: "yes" });}
+			});
+		  }else {console.log(".....no account.......");res.send({ noaccount: "yes"});}
+     });
+			
   });
   
   app.get('/storeusers', function (req, res) {
