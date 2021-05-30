@@ -87,6 +87,7 @@ app.get('/getordersummary', function (req, res) {
   var return_data ={};
   var data = [];
   console.log('..Inside get order summary');
+  db.query("SET SESSION sql_mode=''");
   db.query('select id,delivery_number,bill_of_lading_id,max(case when (product_name="UNL 87 RFG ETH 10%") then product_name else NULL end) as "UNL 87 RFG",max(case when (product_name="UNL 87 RFG ETH 10%") then gross_gallons else NULL end) as "UNL87GrossGallons",max(case when (product_name="PREM 93 RFG ETH 10%") then product_name else NULL end) as "PREM 93 RFG",max(case when (product_name="PREM 93 RFG ETH 10%") then gross_gallons else NULL end) as "PREM93GrossGallons",max(case when (product_name="ULSD CLEAR TXLED") then product_name else NULL end) as "ULSD CLEAR TXLED",max(case when (product_name="ULSD CLEAR TXLED") then gross_gallons else NULL end) as "ULSDGrossGallons", max(case when (product_name="B20 Biodiesel") then product_name else NULL end) as "B20 Biodiesel",max(case when (product_name="B20 Biodiesel") then gross_gallons else NULL end) as "B20GrossGallons" from store_inventory where dealer="Elan 10" and bol_status_description="Scheduled" group by bill_of_lading_id order by bill_of_lading_id', function (error, results, fields) {
     if (error) throw error;
     return_data.availInventories = results;
