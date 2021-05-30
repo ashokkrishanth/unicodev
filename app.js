@@ -81,6 +81,54 @@ app.post("/login", (req, res) => {
 			
   });
   
+
+app.get('/getordersummary', function (req, res) {
+  //console.log(req);
+  var return_data ={};
+  var data = [];
+  console.log('..Inside get order summary');
+  db.query('select id,delivery_number,bill_of_lading_id,max(case when (product_name="UNL 87 RFG ETH 10%") then product_name else NULL end) as "UNL 87 RFG",max(case when (product_name="UNL 87 RFG ETH 10%") then gross_gallons else NULL end) as "UNL87GrossGallons",max(case when (product_name="PREM 93 RFG ETH 10%") then product_name else NULL end) as "PREM 93 RFG",max(case when (product_name="PREM 93 RFG ETH 10%") then gross_gallons else NULL end) as "PREM93GrossGallons",max(case when (product_name="ULSD CLEAR TXLED") then product_name else NULL end) as "ULSD CLEAR TXLED",max(case when (product_name="ULSD CLEAR TXLED") then gross_gallons else NULL end) as "ULSDGrossGallons", max(case when (product_name="B20 Biodiesel") then product_name else NULL end) as "B20 Biodiesel",max(case when (product_name="B20 Biodiesel") then gross_gallons else NULL end) as "B20GrossGallons" from store_inventory where dealer="Elan 10" and bol_status_description="Scheduled" group by bill_of_lading_id order by bill_of_lading_id', function (error, results, fields) {
+    if (error) throw error;
+    return_data.availInventories = results;
+
+    db.query("select * from price where store_name='Elan 1'", function (error, results, fields) {
+      if (error) throw error;
+      return_data.prices = results;
+    });
+
+    db.query('select id,delivery_number,bill_of_lading_id,max(case when (product_name="UNL 87 RFG ETH 10%") then product_name else NULL end) as "UNL 87 RFG",max(case when (product_name="UNL 87 RFG ETH 10%") then gross_gallons else NULL end) as "UNL87GrossGallons",max(case when (product_name="PREM 93 RFG ETH 10%") then product_name else NULL end) as "PREM 93 RFG",max(case when (product_name="PREM 93 RFG ETH 10%") then gross_gallons else NULL end) as "PREM93GrossGallons",max(case when (product_name="ULSD CLEAR TXLED") then product_name else NULL end) as "ULSD CLEAR TXLED",max(case when (product_name="ULSD CLEAR TXLED") then gross_gallons else NULL end) as "ULSDGrossGallons", max(case when (product_name="B20 Biodiesel") then product_name else NULL end) as "B20 Biodiesel",max(case when (product_name="B20 Biodiesel") then gross_gallons else NULL end) as "B20GrossGallons" from store_inventory where dealer="Elan 10" and bol_status_description="Out for Delivery" group by bill_of_lading_id order by bill_of_lading_id', function (error, intransitresults, fields) {
+      if (error) throw error;
+      return_data.intransit = intransitresults;
+   //   console.log(return_data);
+        res.send(return_data);
+    });
+  });
+});
+
+
+app.post('/updateordersummary', function (req, res) {
+  console.log("....inside the updateorder summary");
+  //console.log(req);
+  var return_data12 ={};
+  var data = [];
+  var test = req.body.checkedItems12;
+  var i;
+  for (i = 0; i < req.body.checkedItems12.length; i++) {
+     if (req.body.checkedItems12[i]!=null){
+      console.log(req.body.checkedItems12[i]);
+      var sql = "UPDATE test_inventory SET bol_status_description = 'Completed' WHERE id = '"+req.body.checkedItems12[i]+"'";
+      db.query(sql, function (err, result) {
+        if (err) throw err;
+        console.log(result.affectedRows + " record(s) updated");
+      });
+    }
+    //console.log(req);
+  }
+
+  res.send(return_data12);
+});
+
+
   app.get('/storeusers', function (req, res) {
     console.log(req);
     db.query('select * from users', function (error, results, fields) {
