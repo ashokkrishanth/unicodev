@@ -1,13 +1,5 @@
 const express = require("express");
 const mysql = require("mysql");
-const cors = require("cors");
-
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const session = require("express-session");
-
-const bcrypt = require("bcrypt");
-const moment = require('moment');
 
 const app = express();
 
