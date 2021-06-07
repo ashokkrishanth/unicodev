@@ -1,7 +1,9 @@
 const express = require("express");
 const mysql = require("mysql");
 
-const app = express();
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
 
 app.use(express.json());
 app.use(function(req, res, next) {
@@ -26,23 +28,9 @@ app.use(
 );
 
 
-const db = mysql.createConnection({
-  user: "unicodevserver@unicoelanserver",
-  host: "unicoelanserver.mysql.database.azure.com",
-  password: "P@ssword",
-  database: "devtesting",
-});
-
 app.get('/test', (req, res) => {
   res.send('Welcome to the backend node js!');
 });
 
-app.get('/storeusers', function (req, res) {
-  console.log(req.checkbox);
-  db.query('select * from users', function (error, results, fields) {
-   if (error) throw error;
-   console.log(JSON.stringify(results));
-   res.end(JSON.stringify(results));
- });
-});
+
 
